@@ -5,6 +5,7 @@ import Chart from "./chart";
 const styles = (theme) => ({
   "chart-container": {
     height: 500,
+    cursor: "grab",
   },
 });
 
