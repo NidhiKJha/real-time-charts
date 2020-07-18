@@ -1,12 +1,11 @@
 import React from "react";
-import { render } from "react-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Chart from "./chart";
 
-const styles = theme => ({
+const styles = (theme) => ({
   "chart-container": {
-    height: 400
-  }
+    height: 500,
+  },
 });
 
 class App extends React.Component {
@@ -17,33 +16,39 @@ class App extends React.Component {
         {
           type: "line",
           label: "BTC-USD",
-          backgroundColor: "rgba(0, 0, 0, 0)",
+          backgroundColor: "rgba(255, 206, 80, 0.2)",
           borderColor: this.props.theme.palette.primary.main,
           pointBackgroundColor: this.props.theme.palette.secondary.main,
           pointBorderColor: this.props.theme.palette.secondary.main,
           borderWidth: "2",
           lineTension: 0.45,
-          data: []
-        }
-      ]
+          data: [],
+        },
+      ],
     },
     lineChartOptions: {
       responsive: true,
       maintainAspectRatio: false,
       tooltips: {
-        enabled: true
+        enabled: true,
       },
       scales: {
         xAxes: [
           {
             ticks: {
               autoSkip: true,
-              maxTicksLimit: 10
-            }
-          }
-        ]
-      }
-    }
+              maxTicksLimit: 10,
+            },
+          },
+        ],
+      },
+      title: {
+        display: true,
+        text: "Bitcoin Line Chart ",
+        fontWeight: 500,
+        fontSize: 16,
+      },
+    },
   };
 
   componentDidMount() {
@@ -52,18 +57,18 @@ class App extends React.Component {
       channels: [
         {
           name: "ticker",
-          product_ids: ["BTC-USD"]
-        }
-      ]
+          product_ids: ["BTC-USD"],
+        },
+      ],
     };
 
-    this.ws = new WebSocket("wss://ws-feed.pro.coinbase.com");
+    this.ws = new WebSocket("wss://ws-feed.pro.coinbase.com ");
 
     this.ws.onopen = () => {
       this.ws.send(JSON.stringify(subscribe));
     };
 
-    this.ws.onmessage = e => {
+    this.ws.onmessage = (e) => {
       const value = JSON.parse(e.data);
       if (value.type !== "ticker") {
         return;
@@ -78,7 +83,7 @@ class App extends React.Component {
         datasets: [newBtcDataSet],
         labels: this.state.lineChartData.labels.concat(
           new Date().toLocaleTimeString()
-        )
+        ),
       };
       this.setState({ lineChartData: newChartData });
     };
